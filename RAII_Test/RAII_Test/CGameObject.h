@@ -13,13 +13,13 @@ public:
 	virtual void	Render() abstract;
 
 public:
-	unsigned int	Get_ID() { return m_uID; }
+	unsigned int	Get_ID() const { return m_uID; }
 
 	void			Set_IsDead() { m_bIsDead = true; }
-	bool			Get_IsDead() { return m_bIsDead; }
+	bool			Get_IsDead() const { return m_bIsDead; }
 
 	void			Set_Hp(int iHp) { m_iHp = iHp; }
-	int				Get_Hp() { return m_iHp; }
+	int				Get_Hp() const { return m_iHp; }
 
 	void			Hit(int iDamage) { m_iHp -= iDamage; }
 

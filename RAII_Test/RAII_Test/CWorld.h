@@ -19,7 +19,7 @@ public:
 	bool	Get_Exit() { return m_bExit; }
 
 private:
-	vector<unique_ptr<CGameObject>> m_vecObejct;
+	vector<unique_ptr<CGameObject>> m_vecObject;
 	bool							m_bExit = false;
 };
 
