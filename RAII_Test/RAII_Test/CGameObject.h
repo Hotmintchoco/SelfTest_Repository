@@ -18,7 +18,7 @@ public:
 	void			Set_IsDead() { m_bIsDead = true; }
 	bool			Get_IsDead() { return m_bIsDead; }
 
-	void			Set_Hp(int iHp) { m_iHp = m_iHp; }
+	void			Set_Hp(int iHp) { m_iHp = iHp; }
 	int				Get_Hp() { return m_iHp; }
 
 	void			Hit(int iDamage) { m_iHp -= iDamage; }
