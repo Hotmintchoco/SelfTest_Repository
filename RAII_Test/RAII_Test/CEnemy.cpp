@@ -4,6 +4,7 @@
 CEnemy::CEnemy()
 {
 	cout << "Enemy 생성" << endl;
+	m_eObjType = OBJTYPE::ENEMY;
 }
 
 CEnemy::~CEnemy()

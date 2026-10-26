@@ -45,13 +45,10 @@ void CWorld::LateUpdate()
 			iter->Hit(5);
 	}
 
-	m_vecObject.erase(
-		remove_if(m_vecObject.begin(), m_vecObject.end(),
-			[](const auto& obj)
+	erase_if(m_vecObject, [](const auto& obj)
 			{
 				return obj->Get_IsDead();
-			}),
-		m_vecObject.end());
+			});
 
 	// 종료 조건
 	if (m_vecObject.size() < 3)

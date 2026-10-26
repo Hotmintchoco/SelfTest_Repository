@@ -4,6 +4,7 @@
 CRobot::CRobot()
 {
 	cout << "Robot 생성" << endl;
+	m_eObjType = OBJTYPE::PLAYER;
 }
 
 CRobot::~CRobot()

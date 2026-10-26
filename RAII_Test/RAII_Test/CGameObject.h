@@ -14,6 +14,7 @@ public:
 
 public:
 	unsigned int	Get_ID() const { return m_uID; }
+	OBJTYPE			Get_ObjType() const { return m_eObjType; }
 
 	void			Set_IsDead() { m_bIsDead = true; }
 	bool			Get_IsDead() const { return m_bIsDead; }
@@ -28,5 +29,6 @@ protected:
 	unsigned int		m_uID;
 	bool				m_bIsDead;
 	int					m_iHp;
+	OBJTYPE				m_eObjType = OBJTYPE::END;
 };
 
