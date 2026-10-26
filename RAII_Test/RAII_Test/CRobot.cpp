@@ -1,7 +1,7 @@
 ﻿#include "pch.h"
 #include "CRobot.h"
 
-CRobot::CRobot()
+CRobot::CRobot() : m_iDamage(5)
 {
 	cout << "Robot 생성" << endl;
 	m_eObjType = OBJTYPE::PLAYER;
@@ -32,4 +32,13 @@ void CRobot::LateUpdate()
 
 void CRobot::Render()
 {
+}
+
+bool CRobot::Attack(CGameObject* pTarget)
+{
+	if (nullptr == pTarget)
+		return false;
+
+	pTarget->Hit(m_iDamage);
+	return true;
 }

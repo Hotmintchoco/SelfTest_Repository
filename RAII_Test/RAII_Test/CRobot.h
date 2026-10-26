@@ -11,5 +11,11 @@ public:
 	void	Update() override;
 	void	LateUpdate() override;
 	void	Render() override;
+
+public:
+	bool	Attack(CGameObject* pTarget);
+
+private:
+	int		m_iDamage;
 };
 
