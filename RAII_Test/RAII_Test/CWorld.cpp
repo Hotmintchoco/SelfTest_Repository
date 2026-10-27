@@ -98,10 +98,20 @@ void CWorld::LateUpdate()
 	}
 
 	// 삭제 처리
+	int iSize = m_vecObject.size();
+
 	erase_if(m_vecObject, [](const auto& obj)
 		{
 			return obj->Get_IsDead();
 		});
+
+	if (iFindID != UINT32_MAX)
+	{
+		/* 제거 후 같은 ID 검색 */
+		pEnemy = FindAliveID(iFindID);
+		if (nullptr == pEnemy && m_vecObject.size() < iSize)
+			cout << "제거 완료 / vecSize " << iSize << " -> " << m_vecObject.size() << endl;
+	}
 }
 
 void CWorld::Render()
@@ -112,8 +122,6 @@ void CWorld::Render()
 unsigned int CWorld::FindLowestHpEnemy()
 {
 	uint32_t iFindID = UINT32_MAX;
-	int iHp = INT32_MAX;
-
 	vector<CGameObject*> vecCandidates;
 
 	for (auto& iter : m_vecObject)
@@ -122,20 +130,6 @@ unsigned int CWorld::FindLowestHpEnemy()
 			continue;
 
 		vecCandidates.push_back(iter.get());
-
-		//int iNowHp = iter->Get_Hp();
-		//uint32_t iNowID = iter->Get_ID();
-		//
-		//if (iNowHp < iHp)
-		//{
-		//	iHp = iNowHp;
-		//	iFindID = iNowID;
-		//}
-		//else if (iNowHp == iHp && iNowID < iFindID)
-		//{
-		//	iHp = iNowHp;
-		//	iFindID = iNowID;
-		//}
 	}
 
 	auto iter = std::min_element(vecCandidates.begin(), vecCandidates.end(),
