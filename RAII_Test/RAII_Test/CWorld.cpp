@@ -49,7 +49,7 @@ void CWorld::LateUpdate()
 {
 	// 전투 처리
 	int iInput(0);
-	unsigned int iFindID(0);
+	uint32_t iFindID(UINT32_MAX);
 
 	cout << "\n종료 : 0\t체력이 낮은 적 공격 : 1\t" << endl;
 	cin >> iInput;
@@ -76,6 +76,9 @@ void CWorld::LateUpdate()
 				break;
 
 			static_cast<CRobot*>(pPlayer)->Attack(pEnemy);
+
+			uint32_t iNextID = FindLowestHpEnemy();
+			cout << "다음 적의 ID : " << iNextID << endl;
 		}
 		break;
 	default:
@@ -99,14 +102,6 @@ void CWorld::LateUpdate()
 		{
 			return obj->Get_IsDead();
 		});
-
-	if (iFindID != UINT32_MAX)
-	{
-		/* 제거 후 같은 ID 검색 */
-		pEnemy = FindAliveID(iFindID);
-		if (nullptr == pEnemy)
-			cout << "제거 완료 / nullptr 반환" << endl;
-	}
 }
 
 void CWorld::Render()
