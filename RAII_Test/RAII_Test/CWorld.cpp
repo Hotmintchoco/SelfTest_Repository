@@ -111,7 +111,7 @@ void CWorld::Render()
 
 unsigned int CWorld::FindLowestHpEnemy()
 {
-	unsigned int iFindID = UINT32_MAX;
+	uint32_t iFindID = UINT32_MAX;
 	int iHp = INT32_MAX;
 
 
@@ -120,10 +120,17 @@ unsigned int CWorld::FindLowestHpEnemy()
 		if (iter->Get_ObjType() == OBJTYPE::ENEMY)
 		{
 			// ID가 순차적으로 처리되고 있기 때문에 선점한 ID는 더 작다.
-			if (iter->Get_Hp() <= iHp && iter->Get_ID() < iFindID)
+			int iNowHp = iter->Get_Hp();
+			uint32_t iNowID = iter->Get_ID();
+			if (iNowHp < iHp)
 			{
-				iHp = iter->Get_Hp();
-				iFindID = iter->Get_ID();
+				iHp = iNowHp;
+				iFindID = iNowID;
+			}
+			else if (iter->Get_Hp() == iHp && iter->Get_ID() < iFindID)
+			{
+				iHp = iNowHp;
+				iFindID = iNowID;
 			}
 		}
 	}
