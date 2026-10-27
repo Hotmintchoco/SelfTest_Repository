@@ -127,7 +127,7 @@ unsigned int CWorld::FindLowestHpEnemy()
 				iHp = iNowHp;
 				iFindID = iNowID;
 			}
-			else if (iter->Get_Hp() == iHp && iter->Get_ID() < iFindID)
+			else if (iNowHp == iHp && iNowID < iFindID)
 			{
 				iHp = iNowHp;
 				iFindID = iNowID;
