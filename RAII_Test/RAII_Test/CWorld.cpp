@@ -114,26 +114,41 @@ unsigned int CWorld::FindLowestHpEnemy()
 	uint32_t iFindID = UINT32_MAX;
 	int iHp = INT32_MAX;
 
+	vector<CGameObject*> vecCandidates;
 
 	for (auto& iter : m_vecObject)
 	{
 		if (iter->Get_ObjType() != OBJTYPE::ENEMY || iter->Get_IsDead())
 			continue;
 
-		int iNowHp = iter->Get_Hp();
-		uint32_t iNowID = iter->Get_ID();
+		vecCandidates.push_back(iter.get());
 
-		if (iNowHp < iHp)
-		{
-			iHp = iNowHp;
-			iFindID = iNowID;
-		}
-		else if (iNowHp == iHp && iNowID < iFindID)
-		{
-			iHp = iNowHp;
-			iFindID = iNowID;
-		}
+		//int iNowHp = iter->Get_Hp();
+		//uint32_t iNowID = iter->Get_ID();
+		//
+		//if (iNowHp < iHp)
+		//{
+		//	iHp = iNowHp;
+		//	iFindID = iNowID;
+		//}
+		//else if (iNowHp == iHp && iNowID < iFindID)
+		//{
+		//	iHp = iNowHp;
+		//	iFindID = iNowID;
+		//}
 	}
+
+	auto iter = std::min_element(vecCandidates.begin(), vecCandidates.end(),
+		[](const CGameObject* a, const CGameObject* b) 
+		{
+			if (a->Get_Hp() == b->Get_Hp())
+				return a->Get_ID() < b->Get_ID();
+			else
+				return a->Get_Hp() < b->Get_Hp();
+		});
+
+	if (iter != vecCandidates.end())
+		iFindID = (*iter)->Get_ID();
 
 	return iFindID; // 최대값을 반환받을 시에 존재하지 않는 것으로 판단
 }
