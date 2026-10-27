@@ -47,12 +47,6 @@ void CWorld::Update()
 
 void CWorld::LateUpdate()
 {
-	// 삭제 처리
-	erase_if(m_vecObject, [](const auto& obj)
-		{
-			return obj->Get_IsDead();
-		});
-
 	// 전투 처리
 	int iInput(0);
 	unsigned int iFindID(0);
@@ -87,6 +81,27 @@ void CWorld::LateUpdate()
 	default:
 		break;
 	}
+
+	/* Enemy 처치 직후, 제거 전 ID 검색 */
+	CGameObject* pEnemy = FindAliveID(iFindID);
+	if (nullptr == pEnemy)
+		cout << "Enemy 처치 완료 / nullptr 반환" << endl;
+	else
+		cout << "Enemy 처치 실패\tID : " << iFindID << endl;
+
+	// 삭제 처리
+	erase_if(m_vecObject, [](const auto& obj)
+		{
+			return obj->Get_IsDead();
+		});
+
+	/* 제거 후 같은 ID 검색 */
+	pEnemy = FindAliveID(iFindID);
+	if (nullptr == pEnemy)
+		cout << "제거 완료 / nullptr 반환" << endl;
+	else
+		cout << "Enemy 제거 실패\tID : " << iFindID << endl;
+
 }
 
 void CWorld::Render()
@@ -105,7 +120,7 @@ unsigned int CWorld::FindLowestHpEnemy()
 		if (iter->Get_ObjType() == OBJTYPE::ENEMY)
 		{
 			// ID가 순차적으로 처리되고 있기 때문에 선점한 ID는 더 작다.
-			if (iter->Get_Hp() < iHp)
+			if (iter->Get_Hp() <= iHp && iter->Get_ID() < iFindID)
 			{
 				iHp = iter->Get_Hp();
 				iFindID = iter->Get_ID();

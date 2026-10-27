@@ -22,7 +22,7 @@ public:
 	void			Set_Hp(int iHp) { m_iHp = iHp; }
 	int				Get_Hp() const { return m_iHp; }
 
-	void			Hit(int iDamage) { m_iHp -= iDamage; }
+	void			Hit(int iDamage);
 
 protected:
 	static unsigned int s_uObjectID;

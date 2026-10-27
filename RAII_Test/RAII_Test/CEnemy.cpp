@@ -18,9 +18,6 @@ void CEnemy::Initialize()
 
 void CEnemy::Update()
 {
-	if (m_iHp <= 0)
-		Set_IsDead();
-
 	string strIsDead = m_bIsDead ? "True" : "False";
 
 	cout << "[Update/Enemy] ID : " << m_uID << " hp : " << m_iHp << " isDead : " << strIsDead << endl;

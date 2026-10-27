@@ -14,4 +14,12 @@ CGameObject::~CGameObject()
 	cout << "GameObject 소멸 / id : " << m_uID << endl;
 }
 
+void CGameObject::Hit(int iDamage)
+{
+	m_iHp -= iDamage;
+
+	if (m_iHp <= 0)
+		Set_IsDead();
+}
+
 
