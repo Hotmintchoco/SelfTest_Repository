@@ -19,9 +19,18 @@ void CWorld::Initialize()
 	auto player = make_unique<CRobot>();
 	player->Initialize();
 	player->Set_Hp(10);
+	m_iPlayerID = player->Get_ID();
+
 	m_vecObject.push_back(std::move(player));
 	
-	for (int i = 0; i < 3; ++i)
+	// 적 A
+	auto enemy = make_unique<CEnemy>();
+	enemy->Initialize();
+	enemy->Set_Hp(8);
+	m_vecObject.push_back(std::move(enemy));
+
+	// 적 B, C
+	for (int i = 0; i < 2; ++i)
 	{
 		auto enemy = make_unique<CEnemy>();
 		enemy->Initialize();
@@ -38,25 +47,90 @@ void CWorld::Update()
 
 void CWorld::LateUpdate()
 {
-	// 전투 처리
-	for (auto& iter : m_vecObject)
-	{
-		if (iter->Get_ID() > 1)
-			iter->Hit(5);
-	}
-
+	// 삭제 처리
 	erase_if(m_vecObject, [](const auto& obj)
-			{
-				return obj->Get_IsDead();
-			});
+		{
+			return obj->Get_IsDead();
+		});
 
-	// 종료 조건
-	if (m_vecObject.size() < 3)
+	// 전투 처리
+	int iInput(0);
+	unsigned int iFindID(0);
+
+	cout << "\n종료 : 0\t체력이 낮은 적 공격 : 1\t" << endl;
+	cin >> iInput;
+
+	switch (iInput)
+	{
+	case 0: 
 		Set_Exit();
+		break;
+	case 1:
+		iFindID = FindLowestHpEnemy();
+		if (iFindID == UINT32_MAX)
+			cout << "현재 적이 존재하지 않습니다." << endl;
+		else
+		{
+			cout << "현재 Hp가 낮은 적의 ID : " << iFindID << endl;
+			
+			CGameObject* pPlayer = FindAliveID(m_iPlayerID);
+			if (nullptr == pPlayer)
+				break;
+
+			CGameObject* pEnemy = FindAliveID(iFindID);
+			if (nullptr == pEnemy)
+				break;
+
+			static_cast<CRobot*>(pPlayer)->Attack(pEnemy);
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 void CWorld::Render()
 {
 	// 후에 그려질 화면
+}
+
+unsigned int CWorld::FindLowestHpEnemy()
+{
+	unsigned int iFindID = UINT32_MAX;
+	int iHp = INT32_MAX;
+
+
+	for (auto& iter : m_vecObject)
+	{
+		if (iter->Get_ObjType() == OBJTYPE::ENEMY)
+		{
+			// ID가 순차적으로 처리되고 있기 때문에 선점한 ID는 더 작다.
+			if (iter->Get_Hp() < iHp)
+			{
+				iHp = iter->Get_Hp();
+				iFindID = iter->Get_ID();
+			}
+		}
+	}
+
+	return iFindID; // 최대값을 반환받을 시에 존재하지 않는 것으로 판단
+}
+
+CGameObject* CWorld::FindAliveID(unsigned int id)
+{
+	auto iter = find_if(m_vecObject.begin(), m_vecObject.end(), [id](const auto& obj)
+		{
+			return obj->Get_ID() == id;
+		});
+
+	if (iter == m_vecObject.end())
+		return nullptr;
+
+	CGameObject* pObj = iter->get();
+
+	if (pObj->Get_Hp() <= 0)
+		return nullptr;
+
+	return pObj;
 }
 
