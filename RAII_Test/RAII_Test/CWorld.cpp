@@ -84,10 +84,19 @@ void CWorld::LateUpdate()
 				});
 
 			static_cast<CRobot*>(pPlayer)->Attack(pEnemy);
+			
+			cout << "============ 1회차 공격 ============\n";
+
 			static_cast<CRobot*>(pPlayer)->Attack(pEnemy);
 
+			cout << "============ 2회차 공격 ============\n";
+
 			uint32_t iNextID = FindLowestHpEnemy();
-			cout << "다음 적의 ID : " << iNextID << endl;
+			if (UINT32_MAX == iNextID)
+				cout << "적을 전부 처치했습니다." << endl;
+			else
+				cout << "다음 적의 ID : " << iNextID << endl;
+			
 		}
 		break;
 	default:

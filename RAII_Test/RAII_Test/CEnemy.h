@@ -18,10 +18,7 @@ public:
 	virtual void Set_IsDead() override; 
 
 public:
-	void SetDeathCallback(DeathCallback callback)
-	{
-		m_OnDeath = std::move(callback);
-	}
+	void SetDeathCallback(DeathCallback callback);
 
 private:
 	DeathCallback m_OnDeath;

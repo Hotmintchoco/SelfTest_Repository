@@ -41,3 +41,8 @@ void CEnemy::Set_IsDead()
 
 	m_OnDeath(m_uID);
 }
+
+void CEnemy::SetDeathCallback(DeathCallback callback)
+{
+	m_OnDeath = std::move(callback);
+}
