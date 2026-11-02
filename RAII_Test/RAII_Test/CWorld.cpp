@@ -50,6 +50,7 @@ void CWorld::LateUpdate()
 	// 전투 처리
 	int iInput(0);
 	uint32_t iFindID(UINT32_MAX);
+	uint32_t& iScore = m_iScore;
 
 	cout << "\n종료 : 0\t체력이 낮은 적 공격 : 1\t" << endl;
 	cin >> iInput;
@@ -71,10 +72,18 @@ void CWorld::LateUpdate()
 			if (nullptr == pPlayer)
 				break;
 
-			CGameObject* pEnemy = FindAliveID(iFindID);
+			CEnemy* pEnemy = dynamic_cast<CEnemy*>(FindAliveID(iFindID));
 			if (nullptr == pEnemy)
 				break;
+			
+			pEnemy->SetDeathCallback([&iScore](uint32_t iDeadID)
+				{
+					iScore += 100;
+					cout << "============================================\n";
+					cout << "처치 id : " << iDeadID << ", 점수 : " << iScore << endl;
+				});
 
+			static_cast<CRobot*>(pPlayer)->Attack(pEnemy);
 			static_cast<CRobot*>(pPlayer)->Attack(pEnemy);
 
 			uint32_t iNextID = FindLowestHpEnemy();

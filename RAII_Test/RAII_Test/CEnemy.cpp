@@ -31,3 +31,13 @@ void CEnemy::LateUpdate()
 void CEnemy::Render()
 {
 }
+
+void CEnemy::Set_IsDead()
+{
+	if (m_bIsDead)
+		return;
+
+	m_bIsDead = true;
+
+	m_OnDeath(m_uID);
+}

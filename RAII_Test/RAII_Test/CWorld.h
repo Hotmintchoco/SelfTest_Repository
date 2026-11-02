@@ -26,7 +26,8 @@ private:
 
 private:
 	vector<unique_ptr<CGameObject>> m_vecObject;
-	unsigned int					m_iPlayerID = 0;
+	uint32_t						m_iPlayerID = 0;
+	uint32_t						m_iScore = 0;
 	bool							m_bExit = false;
 };
 

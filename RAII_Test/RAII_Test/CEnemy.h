@@ -1,5 +1,8 @@
 ﻿#pragma once
 #include "CGameObject.h"
+
+using DeathCallback = std::function<void(uint32_t)>;
+
 class CEnemy : public CGameObject
 {
 public:
@@ -7,9 +10,20 @@ public:
 	virtual ~CEnemy();
 
 public:
-	void Initialize() override;
-	void Update() override;
-	void LateUpdate() override;
-	void Render() override;
+	virtual void Initialize() override;
+	virtual void Update() override;
+	virtual void LateUpdate() override;
+	virtual void Render() override;
+
+	virtual void Set_IsDead() override; 
+
+public:
+	void SetDeathCallback(DeathCallback callback)
+	{
+		m_OnDeath = std::move(callback);
+	}
+
+private:
+	DeathCallback m_OnDeath;
 };
 

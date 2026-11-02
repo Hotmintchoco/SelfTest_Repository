@@ -16,6 +16,12 @@ CGameObject::~CGameObject()
 
 void CGameObject::Hit(int iDamage)
 {
+	if (Get_IsDead())
+	{
+		cout << "id : " << m_uID << " 사망 상태 / Hit 불가\n";
+		return;
+	}
+
 	m_iHp -= iDamage;
 
 	if (m_iHp <= 0)

@@ -16,7 +16,7 @@ public:
 	unsigned int	Get_ID() const { return m_uID; }
 	OBJTYPE			Get_ObjType() const { return m_eObjType; }
 
-	void			Set_IsDead() { m_bIsDead = true; }
+	virtual void	Set_IsDead() { m_bIsDead = true; }
 	bool			Get_IsDead() const { return m_bIsDead; }
 
 	void			Set_Hp(int iHp) { m_iHp = iHp; }
