@@ -27,6 +27,14 @@ void CWorld::Initialize()
 	auto enemy = make_unique<CEnemy>();
 	enemy->Initialize();
 	enemy->Set_Hp(8);
+	enemy->SetDeathCallback([this](uint32_t iDeadID)
+		{
+			this->m_iScore += 100;
+			this->m_vecDeadID.push_back(iDeadID);
+			cout << "============================================\n";
+			cout << "처치 id : " << iDeadID << ", 점수 : " << this->m_iScore << endl;
+		});
+
 	m_vecObject.push_back(std::move(enemy));
 
 	// 적 B, C
@@ -35,6 +43,14 @@ void CWorld::Initialize()
 		auto enemy = make_unique<CEnemy>();
 		enemy->Initialize();
 		enemy->Set_Hp(3);
+		enemy->SetDeathCallback([this](uint32_t iDeadID)
+			{
+				this->m_iScore += 100;
+				this->m_vecDeadID.push_back(iDeadID);
+				cout << "============================================\n";
+				cout << "처치 id : " << iDeadID << ", 점수 : " << this->m_iScore << endl;
+			});
+
 		m_vecObject.push_back(std::move(enemy));
 	}
 }
@@ -50,7 +66,6 @@ void CWorld::LateUpdate()
 	// 전투 처리
 	int iInput(0);
 	uint32_t iFindID(UINT32_MAX);
-	uint32_t& iScore = m_iScore;
 
 	cout << "\n종료 : 0\t체력이 낮은 적 공격 : 1\t" << endl;
 	cin >> iInput;
@@ -75,21 +90,17 @@ void CWorld::LateUpdate()
 			CEnemy* pEnemy = dynamic_cast<CEnemy*>(FindAliveID(iFindID));
 			if (nullptr == pEnemy)
 				break;
-			
-			pEnemy->SetDeathCallback([&iScore](uint32_t iDeadID)
+
+			for (int i = 0; i < 2; ++i)
+			{
+				cout << "[공격 여부] 공격 : 1 / 취소 : 1 외의 입력\n" << endl;
+				cin >> iInput;
+
+				if (1 == iInput)
 				{
-					iScore += 100;
-					cout << "============================================\n";
-					cout << "처치 id : " << iDeadID << ", 점수 : " << iScore << endl;
-				});
-
-			static_cast<CRobot*>(pPlayer)->Attack(pEnemy);
-			
-			cout << "============ 1회차 공격 ============\n";
-
-			static_cast<CRobot*>(pPlayer)->Attack(pEnemy);
-
-			cout << "============ 2회차 공격 ============\n";
+					static_cast<CRobot*>(pPlayer)->Attack(pEnemy);
+				}
+			}
 
 			uint32_t iNextID = FindLowestHpEnemy();
 			if (UINT32_MAX == iNextID)
@@ -130,6 +141,15 @@ void CWorld::LateUpdate()
 		if (nullptr == pEnemy && m_vecObject.size() < iSize)
 			cout << "제거 완료 / vecSize " << iSize << " -> " << m_vecObject.size() << endl;
 	}
+
+	/* 처치한 적 목록 */
+	cout << "======================================\n";
+	cout << "DeadID (";
+	for (auto& iDeadID : m_vecDeadID)
+		cout << iDeadID << " ";
+	cout << ")\n";
+	cout << "======================================\n";
+		
 }
 
 void CWorld::Render()

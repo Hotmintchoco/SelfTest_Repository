@@ -39,7 +39,8 @@ void CEnemy::Set_IsDead()
 
 	m_bIsDead = true;
 
-	m_OnDeath(m_uID);
+	if (nullptr != m_OnDeath)
+		m_OnDeath(m_uID);
 }
 
 void CEnemy::SetDeathCallback(DeathCallback callback)
