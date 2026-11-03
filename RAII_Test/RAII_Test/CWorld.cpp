@@ -27,13 +27,13 @@ void CWorld::Initialize()
 	auto enemy = make_unique<CEnemy>();
 	enemy->Initialize();
 	enemy->Set_Hp(8);
-	enemy->SetDeathCallback([this](uint32_t iDeadID)
+	/*enemy->SetDeathCallback([this](uint32_t iDeadID)
 		{
 			this->m_iScore += 100;
 			this->m_vecDeadID.push_back(iDeadID);
 			cout << "============================================\n";
 			cout << "처치 id : " << iDeadID << ", 점수 : " << this->m_iScore << endl;
-		});
+		});*/
 
 	m_vecObject.push_back(std::move(enemy));
 
@@ -43,13 +43,10 @@ void CWorld::Initialize()
 		auto enemy = make_unique<CEnemy>();
 		enemy->Initialize();
 		enemy->Set_Hp(3);
-		enemy->SetDeathCallback([this](uint32_t iDeadID)
-			{
-				this->m_iScore += 100;
-				this->m_vecDeadID.push_back(iDeadID);
-				cout << "============================================\n";
-				cout << "처치 id : " << iDeadID << ", 점수 : " << this->m_iScore << endl;
-			});
+		
+		DeathRecoder recoder(&this->m_CombatStats);
+
+		enemy->SetDeathCallback(recoder);
 
 		m_vecObject.push_back(std::move(enemy));
 	}
@@ -145,7 +142,7 @@ void CWorld::LateUpdate()
 	/* 처치한 적 목록 */
 	cout << "======================================\n";
 	cout << "DeadID (";
-	for (auto& iDeadID : m_vecDeadID)
+	for (auto& iDeadID : this->m_CombatStats.vecDeadID)
 		cout << iDeadID << " ";
 	cout << ")\n";
 	cout << "======================================\n";
