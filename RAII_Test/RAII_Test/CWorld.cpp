@@ -24,16 +24,12 @@ void CWorld::Initialize()
 	m_vecObject.push_back(std::move(player));
 	
 	// 적 A
+	DeathRecorder recorder(&this->m_CombatStats);
+
 	auto enemy = make_unique<CEnemy>();
 	enemy->Initialize();
 	enemy->Set_Hp(8);
-	/*enemy->SetDeathCallback([this](uint32_t iDeadID)
-		{
-			this->m_iScore += 100;
-			this->m_vecDeadID.push_back(iDeadID);
-			cout << "============================================\n";
-			cout << "처치 id : " << iDeadID << ", 점수 : " << this->m_iScore << endl;
-		});*/
+	enemy->SetDeathCallback(recorder);
 
 	m_vecObject.push_back(std::move(enemy));
 
@@ -43,10 +39,7 @@ void CWorld::Initialize()
 		auto enemy = make_unique<CEnemy>();
 		enemy->Initialize();
 		enemy->Set_Hp(3);
-		
-		DeathRecoder recoder(&this->m_CombatStats);
-
-		enemy->SetDeathCallback(recoder);
+		enemy->SetDeathCallback(recorder);
 
 		m_vecObject.push_back(std::move(enemy));
 	}

@@ -44,11 +44,11 @@ private:
 };
 
 /* 함수 객체 */
-struct DeathRecoder
+struct DeathRecorder
 {
 	CWorld::CombatStats* pCombatStats = nullptr;
 
-	explicit DeathRecoder(CWorld::CombatStats* pCombatStats)
+	explicit DeathRecorder(CWorld::CombatStats* pCombatStats)
 		: pCombatStats(pCombatStats) { }
 
 	void operator()(uint32_t iDeadID) const
